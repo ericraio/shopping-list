@@ -18,9 +18,28 @@
 
 - (IBAction)addNewItemToShoppingList:(id)sender
 {
-    NSString *newItem = [newItemNameTextField stringValue];
+    NSString *itemToAdd = [newItemNameTextField stringValue];
+    for (NSString *eachItem in shoppingListArray) {
+        if ( [eachItem isEqualToString:itemToAdd] )
+        {
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert addButtonWithTitle:@"Duplicate"];
+            [alert addButtonWithTitle:@"Cancel"];
+            [alert setMessageText:@"This item already exists in your shopping list."];
+            [alert setInformativeText:@"Do you really want to add a duplicate item?"];
+            [alert setAlertStyle:NSWarningAlertStyle];
+            
+            long int returnValue = [alert runModal];
+            if (returnValue == NSAlertFirstButtonReturn) {
+                break;
+            } else {
+                return;
+            }
+        }
+    }
     
-    [shoppingListArray addObject:newItem];
+    
+    [shoppingListArray addObject:itemToAdd];
     [newItemNameTextField setStringValue:@""];
     [shoppingListTableView reloadData];
 }
@@ -62,6 +81,26 @@
     [shoppingListTableView reloadData];
     
     return YES;
+}
+
+- (IBAction)removeItemFromShoppingList:(id)sender;
+{
+    long int selectedItemIndex = [shoppingListTableView selectedRow];
+    if (selectedItemIndex == -1) return;
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert setMessageText:@"Delete the shopping list item?"];
+    [alert setInformativeText:@"Deleted items cannot be restored."];
+    [alert setAlertStyle:NSWarningAlertStyle];
+    [alert setAlertStyle:NSWarningAlertStyle];
+    
+    long int returnValue = [alert runModal];
+    if (returnValue == NSAlertFirstButtonReturn) {
+        [shoppingListArray removeObjectAtIndex:selectedItemIndex];
+        [shoppingListTableView reloadData];
+    }
 }
 
 @end

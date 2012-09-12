@@ -9,5 +9,6 @@
 }
 
 - (IBAction)addNewItemToShoppingList:(id)sender;
+- (IBAction)removeItemFromShoppingList:(id)sender;
 
 @end
